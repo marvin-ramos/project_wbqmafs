@@ -21,6 +21,7 @@ class WbqmafsController extends Controller
    
         if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
         {
+            session(['check_login' => true ]);
 
             if (auth()->user()->role_id === 1) {
                 return redirect()

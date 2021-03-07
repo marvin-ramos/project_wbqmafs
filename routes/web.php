@@ -21,10 +21,12 @@ Route::group(['middleware' => 'CheckLoginMiddleware'], function(){
 	Route::get('/admin/home', 'AdminController@dashboard')
 	     ->name('admin.dashboard')
 	     ->middleware('authentic');
+
+	Route::get('/user/home', 'HomeController@dashboard')
+	     ->name('user.dashboard');
 });
 
-Route::get('/user/home', 'HomeController@dashboard')
-	->name('user.dashboard');
+
 
 Route::get('/logout', 'AdminController@logout');
 Route::get('/logout', 'HomeController@logout');

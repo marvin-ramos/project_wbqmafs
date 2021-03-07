@@ -1,16 +1,16 @@
 @extends('layouts.admin-master')
 
 @section('title')
-Dashboard
+Manage Users
 @endsection
 
 @section('content')
 <section class="section">
   <div class="section-header">
-    <h1>Admin Dashboard</h1>
+    <h1>Manage Users</h1>
   </div>
-
   <div class="section-body">
+      <users-component></users-component>
   </div>
 </section>
 @endsection
