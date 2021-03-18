@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class Log extends Model
 {
@@ -13,7 +14,7 @@ class Log extends Model
 		'updated_at', 
     ];
 
-    public function logs() {
-        return $this->hasOne(Log::class, 'id','id');
+    public function user() {
+        return $this->hasOne(User::class, 'id','user_id');
     }
 }

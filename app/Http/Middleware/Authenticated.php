@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 use Auth;
-
 use Closure;
 
 class Authenticated
@@ -17,10 +16,24 @@ class Authenticated
 
     public function handle($request, Closure $next)
     { 
-         if(auth()->user()->role_id == 1){
-            return $next($request);
+        if (!Auth::check()) {
+            return redirect()
+            ->route('view.login')
+            ->with('error',"You must Log in first!");
         }
-   
-        return redirect('view')->with('error',"You don't have admin access.");
+
+        if(Auth::user()->role_id == 1)
+        {
+            return redirect()
+            ->route('admin.dashboard');
+        }
+
+        if(Auth::user()->role_id == 2 )
+        {
+            return redirect()
+            ->route('user.dashboard');
+        }
+
+        return $next($request);
     }
 }

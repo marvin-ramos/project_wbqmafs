@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Log;
+use App\Employee;
 
 class HomeController extends Controller
 {
@@ -30,7 +32,13 @@ class HomeController extends Controller
     }
     
     public function dashboard() {
-        return view('user.dashboard');
+    $count = Log::count(); 
+    $user = auth()->user();
+    $user->employee;
+    $employeeTable = Employee::get();
+
+    return view('user.dashboard', compact('employeeTable','user'))
+         ->with('history', $count);;
     }
 
     public function logout() {

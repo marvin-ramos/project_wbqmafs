@@ -1,0 +1,319 @@
+/* ELEMENTS */
+
+body {
+    font-family: 'Muli', sans-serif !important;
+}
+
+p {
+    text-align: justify;
+}
+
+blockquote {
+    font-family: medium-content-serif-font,Georgia,Cambria,"Times New Roman",Times,serif;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.58;
+    border-left: 3px solid rgba(0,0,0,.84);
+    padding-left: 20px;
+    margin-left: -23px;
+    padding-bottom: 2px;
+  }
+
+.grecaptcha-badge {
+    display: none;
+}
+
+.recaptcha-text {
+    font-size: 0.5rem;
+}
+
+
+/* CLASSES */
+
+.pointer {
+    cursor: pointer !important;
+}
+
+.gsc-search-button {
+    display: none !important;
+}
+
+.gsc-search-button-v2 {
+    display: none !important;
+}
+
+.gsc-control-cse {
+    padding-left: 0 !important;
+}
+
+.gsc-control-cse-en {
+    padding-left: 0 !important;
+}
+
+.gsc-input {
+    padding-right: 0 !important;
+}
+
+.bg-green {
+    background: linear-gradient(120deg, #287d00, #3ec300) !important;
+}
+
+.body-background {
+    background-image: url(/images/hero-bg.jpg);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: contain;
+    width: 100%;
+}
+
+.hero {
+    background-image: url(/images/Rocket-with-sky-mobile-hero.png);
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: cover;
+    max-width: 100%;
+}
+
+@media (min-width: 576px) {
+    .hero {
+        background-image: url(/images/welcm-rocket-hero-2.png);
+        background-repeat: no-repeat;
+        background-position: top right;
+        background-size: cover;
+        max-width: 100%;
+    }
+}
+
+.navbar-nav .active>.nav-link {
+    color: #3ec300 !important;
+    border-bottom: 1px solid !important;
+    border-color: #3ec300;
+}
+
+.nav-tabs .nav-link.active {
+    color: #3ec300 !important;
+}
+
+.nav-tabs .nav-link {
+    color: rgba(0,0,0,.5) !important;
+}
+
+.nav-link {
+    color: rgba(0,0,0,.5) !important;
+}
+
+a.nav-link.active {
+    color: #3ec300 !important;
+}
+
+.dropdown-menu.custom-dropdown {
+    margin-top: -0.8rem;
+}
+
+.btn-green {
+    background: linear-gradient(120deg, #287d00, #3ec300);
+    color: white !important;
+    border: 0px !important;
+}
+
+.btn-grey {
+    background: linear-gradient(120deg, #6B6B6B, #C0C0C0) !important;
+    color: white !important;
+    border: 0px !important;
+}
+
+.no-underline {
+    text-decoration: none !important;
+}
+
+.no-border {
+    border: 0px !important;
+}
+
+.text-green {
+    color: #3ec300 !important;
+}
+
+.text-grey {
+    color: #a3a3a3 !important;
+}
+
+.blockquote-welcm {
+    border-left: 1px black;
+    padding-left: ($spacer * 1.5) !important;
+    padding-right: ($spacer * 1.5) !important;
+    margin-top: ($spacer * .5) !important;
+    margin-bottom: ($spacer * .5) !important;
+    font-style: italic;
+}
+
+.shadow-welcm {
+    box-shadow: 0 0rem 1rem rgba(0,0,0,.15)!important;
+}
+
+.fh {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: solid;
+    border-width: 1px;
+    width: 80px;
+}
+
+.card-footer {
+    background-color: rgba(0,0,0,0)!important;
+}
+
+.pagination {
+   justify-content: center;
+}
+
+.page-link {
+  color: #3ec300;
+}
+
+.page-item.active .page-link {
+  background-color: #3ec300;
+  border-color: #3ec300;
+}
+
+.page-link:hover {
+  color: #287d00;
+}
+
+/* TOAST */
+
+.toast {
+    z-index: 20;
+    position: fixed;
+    right: 20px;
+    top: 100px;
+}
+
+/* BLOG */
+
+.text-blog {
+    font-size: 1.2rem;
+    line-height: 2;
+}
+
+.text-blog a {
+    color: #3ec300 !important;
+}
+
+.blog-post {
+    text-decoration: none !important;
+    color: #000000 !important;
+}
+
+.blog-cta {
+    font-style: italic;
+    color: #a3a3a3 !important;
+    text-align: center;
+}
+
+h5.ql-align-center {
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.hljs-keyword {
+    color: #333;
+    font-weight: bold;
+}
+
+.hljs-number {
+    color: #008080;
+}
+
+.hljs-comment {
+    color: #998;
+    font-style: italic;
+}
+
+.hljs-tag, .hljs-name, .hljs-attribute {
+color: #000080;
+font-weight: normal;
+}
+
+.hljs-number, .hljs-literal, .hljs-variable, .hljs-template-variable, .hljs-tag .hljs-attr {
+color: #008080;
+}
+
+.hljs-string, .hljs-doctag {
+color: #d14;
+}
+
+.blog-post {
+    text-decoration: none !important;
+    color: #000000 !important;
+}
+
+/* Code blocks */
+
+.post-body pre {
+  border-radius: .25rem!important;
+  background-color: #f8f9fa!important;
+  border: solid 2px #f8f9fa;
+  padding: 1.5rem!important;
+}
+
+.hljs-tag {
+  font-size: 87.5%;
+  color: #e83e8c;
+  word-break: break-word;
+}
+
+/* Embedded images */
+
+.embedded_image > img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.embedded_image > p {
+    text-align: center;
+    font-size: 1rem;
+    color: #666;
+}
+
+/* LESS / MORE BUTTONS */
+
+[aria-expanded="false"] > .expanded,
+[aria-expanded="true"] > .collapsed {
+    display: none;
+}
+
+/* IDs */
+
+#footer {
+    background: linear-gradient(120deg, #287d00, #3ec300);
+    color: #ffffff;
+}
+
+#laravel_row {
+    background-image: url(/images/Laravel-no-text-transparent-reduced-opacity.png);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    background-size: 65vw;
+    background-attachment: fixed;
+}
+
+/* CAROUSEL */
+
+.slow-transition {
+    transition-property: transform;
+    transition-duration: 8s;
+    transition-timing-function: linear;
+    transition-delay: 0s;
+}
+
+.carousel-logo {
+    max-width: 20%;
+}

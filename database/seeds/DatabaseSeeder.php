@@ -17,7 +17,11 @@ class DatabaseSeeder extends Seeder
             EmployeesTableSeeder::class,
             GendersTableSeeder::class,
             StatusesTableSeeder::class,
-            LogsTableSeeder::class
+            LogsTableSeeder::class,
+            WatersTableSeeder::class,
+            TurbiditiesTableSeeder::class,
+            TemperaturesTableSeeder::class,
+            Ph_LevelsTableSeeder::class
         ]);
     }
 }

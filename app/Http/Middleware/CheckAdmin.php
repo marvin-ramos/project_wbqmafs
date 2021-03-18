@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Auth;
 
 class CheckAdmin
 {
@@ -15,11 +16,10 @@ class CheckAdmin
      */
     public function handle($request, Closure $next)
     {
-        $userRoles = Auth::user()->roles->pluck('name');
-
-        if(!$userRoles->contains('Administrator'))
-        {
-            return redirect('/home');
+        if(Auth::user()->role_id != 1) {
+            return redirect()
+                 ->route('view.login')
+                 ->with('error',"You don't have admin access.");
         }
         return $next($request);
     }

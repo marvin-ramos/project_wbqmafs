@@ -6,6 +6,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+use App\Employee;
+use App\Role;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -39,5 +42,9 @@ class User extends Authenticatable
 
     public function employee() {
         return $this->hasOne(Employee::class, 'id','employee_id');
+    }
+
+    public function role() {
+        return $this->hasOne(Role::class, 'id','role_id');
     }
 }
