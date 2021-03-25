@@ -77,38 +77,10 @@ Dashboard
 	        <div class="col-lg-8 col-md-12 col-12 col-sm-12">
 	          <div class="card">
 	            <div class="card-header">
-	              <h4>Statistics</h4>
-	              <div class="card-header-action">
-	                <div class="btn-group">
-	                  <a href="#" class="btn btn-primary">Week</a>
-	                  <a href="#" class="btn">Month</a>
-	                </div>
-	              </div>
+	              <h4>Parameters</h4>	
 	            </div>
 	            <div class="card-body">
-	              <canvas id="myChart" height="182"></canvas>
-	              <div class="statistic-details mt-sm-4">
-	                <div class="statistic-details-item">
-	                  <span class="text-muted"><span class="text-primary"><i class="fas fa-caret-up"></i></span> 7%</span>
-	                  <div class="detail-value">$243</div>
-	                  <div class="detail-name">Today's Sales</div>
-	                </div>
-	                <div class="statistic-details-item">
-	                  <span class="text-muted"><span class="text-danger"><i class="fas fa-caret-down"></i></span> 23%</span>
-	                  <div class="detail-value">$2,902</div>
-	                  <div class="detail-name">This Week's Sales</div>
-	                </div>
-	                <div class="statistic-details-item">
-	                  <span class="text-muted"><span class="text-primary"><i class="fas fa-caret-up"></i></span>9%</span>
-	                  <div class="detail-value">$12,821</div>
-	                  <div class="detail-name">This Month's Sales</div>
-	                </div>
-	                <div class="statistic-details-item">
-	                  <span class="text-muted"><span class="text-primary"><i class="fas fa-caret-up"></i></span> 19%</span>
-	                  <div class="detail-value">$92,142</div>
-	                  <div class="detail-name">This Year's Sales</div>
-	                </div>
-	              </div>
+	              	<canvas id="sensorData" height="245"></canvas>
 	            </div>
 	          </div>
 	        </div>
@@ -131,7 +103,7 @@ Dashboard
 	                @endforeach
 	              </ul>
 	              <div class="text-center pt-1 pb-1">
-	                <a href="#" class="btn btn-primary btn-lg btn-round">
+	                <a href="{{ route('history') }}" class="btn btn-primary btn-lg btn-round">
 	                  View All
 	                </a>
 	              </div>
@@ -196,5 +168,76 @@ Dashboard
 		    button: "OK",
 		  });
 		@endif
+	</script>
+	<script>
+		var ctx = document.getElementById('sensorData').getContext('2d');
+		var chart = new Chart(ctx, {
+		type: 'line',
+		data: {
+		labels:  {!! json_encode($chart1->labels) !!} ,
+		datasets: [
+			{
+			label: 'Water Level',
+			backgroundColor: "rgba(71, 195, 99, 0.5)",
+			data:  {!! json_encode($chart1->dataset)!!} ,
+			borderColor: "#47c363",
+        	fill: false,
+			},{
+			label: 'Temperature Level',
+			backgroundColor: "rgba(252, 84, 75, 0.5)",
+			data:  {!! json_encode($chart2->dataset)!!},
+			borderColor: "#fc544b",
+			fill: false,
+			},{
+			label: 'Turbidity Level',
+			backgroundColor: "rgba(205, 211, 216, 0.5)",
+			data:  {!! json_encode($chart3->dataset)!!},
+			borderColor: "#cdd3d8",
+        	fill: false,
+			},{
+			label: 'PH Level',
+			backgroundColor: "rgba(103, 119, 239, 0.5)",
+			data:  {!! json_encode($chart4->dataset)!!} ,
+			borderColor: "#6777ef",
+			fill: false,
+			},
+
+		]
+		},
+		options: {
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero: true,
+						callback: function(value) {
+							if (value % 1 === 0) {
+								return value;
+							}
+						}
+					},
+					scaleLabel: {
+					display: false
+					}
+				}]
+			},
+			legend: {
+				labels: {
+				fontColor: '#122C4B',
+				fontFamily: "'Muli', sans-serif",
+				padding: 25,
+				boxWidth: 25,
+				fontSize: 14,
+				}
+			},
+			layout: {
+				padding: {
+					left: 10,
+					right: 10,
+					top: 0,
+					bottom: 10
+				}
+			}
+		}
+		});
 	</script>
 @endsection

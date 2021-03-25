@@ -79,12 +79,21 @@ Route::prefix('admin')->group(function () {
 	Route::get('parameter/turbidity', 'AdminController@parameterTurbidity')
 		 ->name('parameter.turbidity');
 
+	//for logout user
 	Route::get('/logout', 'AdminController@logout')
 		 ->name('logout.user');
+
+	//for user activities
+	Route::get('user/activities', 'AdminController@userActivities')
+		  ->name('user.activities');
 });
 
 Route::prefix('user')->group(function () {
     Route::get('home', 'HomeController@dashboard')
 	     ->name('user.dashboard');
+	Route::get('profile', 'HomeController@profile')
+		 ->name('user.profile');
+	Route::get('activities', 'HomeController@userActivities')
+		  ->name('user.activities');
 	Route::get('/logout', 'HomeController@logout');
 });

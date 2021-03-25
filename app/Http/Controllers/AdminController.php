@@ -17,6 +17,7 @@ use App\Turbidity;
 use App\Water;
 use App\PhLevel;
 use App\Chart;
+use App\Ponds;
 
 use File;
 use Hash;
@@ -45,7 +46,55 @@ class AdminController extends Controller
                    ->orderBy('created_at', 'desc')
                    ->simplePaginate(4); 
 
-  	return view('admin.dashboard', compact('recentActivities','user'))
+    //for water data here
+    $waterData = DB::table('waters')
+            ->select('water_level')
+            ->groupBy('water_level')
+            ->orderBy('id', 'asc')
+            ->pluck('water_level')
+            ->all();
+
+    $chart1 = new Chart;
+    $chart1->labels = (array_keys($waterData));
+    $chart1->dataset = (array_values($waterData));
+
+    //for temperature data
+    $temperatureData = DB::table('temperatures')
+            ->select('temperature_level')
+            ->groupBy('temperature_level')
+            ->orderBy('id', 'asc')
+            ->pluck('temperature_level')
+            ->all();
+
+    $chart2 = new Chart;
+    $chart2->labels = (array_keys($temperatureData));
+    $chart2->dataset = (array_values($temperatureData));
+
+    //for turbidity data
+    $turbidityData = DB::table('turbidities')
+            ->select('turbidity_level')
+            ->groupBy('turbidity_level')
+            ->orderBy('id', 'asc')
+            ->pluck('turbidity_level')
+            ->all();
+
+    $chart3 = new Chart;
+    $chart3->labels = (array_keys($turbidityData));
+    $chart3->dataset = (array_values($turbidityData));
+
+    //for PH data
+    $phData = DB::table('ph_levels')
+            ->select('ph_level')
+            ->groupBy('ph_level')
+            ->orderBy('id', 'asc')
+            ->pluck('ph_level')
+            ->all();
+
+    $chart4 = new Chart;
+    $chart4->labels = (array_keys($phData));
+    $chart4->dataset = (array_values($phData));
+
+  	return view('admin.dashboard', compact('chart1','chart2','chart3','chart4','recentActivities','user'))
   	     ->with('history', $count);
   }
 
@@ -75,7 +124,6 @@ class AdminController extends Controller
         'middlename'        => 'required|alpha',
         'lastname'          => 'required|min:3|max:20|alpha',
         'gender_id'         => 'required',
-        'age'               => 'required|numeric',
         'birthday'          => 'required',
         'contact_number'    => 'required|numeric', 
         'status_id'         => 'required',
@@ -104,16 +152,29 @@ class AdminController extends Controller
 
       $image = $request->file('profile');
       if($image) {
-          $image_name = date('dmy_H_s_i');
-          $text = strtolower($image->getClientOriginalExtension());
-          $image_full_name = $image_name. '.' .$text;
-          $upload_path = 'images/employee/';
-          $image_url = $upload_path.$image_full_name;
-          $success = $image->move($upload_path,$image_full_name);
-          $data['profile'] = $image_url;
+        $image_name = date('dmy_H_s_i');
+        $text = strtolower($image->getClientOriginalExtension());
+        $image_full_name = $image_name. '.' .$text;
+        $upload_path = 'images/employee/';
+        $image_url = $upload_path.$image_full_name;
+        $success = $image->move($upload_path,$image_full_name);
+        $data['profile'] = $image_url;
       }
       
       $employeeRecords = Employee::insert($data);
+
+      $firstname = $request->firstname; 
+      $middlename = $request->middlename; 
+      $lastname = $request->lastname;
+      
+      $id = auth()->user()->id;
+      $remark = 'has added '. $firstname .' '. $middlename .' '. $lastname.' to the system';
+
+      $records = Log::create([
+          'user_id' => $id,
+          'remarks' => $remark,
+          'created_at' => Carbon::now()
+      ]);
 
       Session::flash('alertTitle', 'Success');
       Session::flash('alertIcon', 'success');
@@ -175,6 +236,19 @@ class AdminController extends Controller
     $employeeRecords = Employee::where('id', $id)
                       ->update($data);
 
+    $firstname = $request->firstname; 
+    $middlename = $request->middlename; 
+    $lastname = $request->lastname;
+    
+    $id = auth()->user()->id;
+    $remark = 'has updated '. $firstname .' '. $middlename .' '. $lastname.' to the system';
+
+    $records = Log::create([
+        'user_id' => $id,
+        'remarks' => $remark,
+        'created_at' => Carbon::now()
+    ]);
+
     Session::flash('alertTitle', 'Success');
     Session::flash('alertIcon', 'success');
 
@@ -199,6 +273,15 @@ class AdminController extends Controller
          ->with('history', $count);
   }
   public function employeeDelete($id) {
+    $remark = 'has deleted an account in the system at';
+    $id = auth()->user()->id;
+
+    $records = Log::create([
+        'user_id' => $id,
+        'remarks' => $remark,
+        'created_at' => Carbon::now()
+    ]);
+
     $data = Employee::find($id)
             ->where('id', $id)
             ->firstorfail();
@@ -255,6 +338,17 @@ class AdminController extends Controller
         'role_id'      => $request->role_id,
     ]);
 
+    $email = $request->email; 
+    
+    $id = auth()->user()->id;
+    $remark = 'has created '. $email .' account to the system';
+
+    $records = Log::create([
+        'user_id' => $id,
+        'remarks' => $remark,
+        'created_at' => Carbon::now()
+    ]);
+
     Session::flash('alertTitle', 'Success');
     Session::flash('alertIcon', 'success');
 
@@ -290,77 +384,39 @@ class AdminController extends Controller
       return view('account.account_record_edit', compact('accountData','user', 'roleData'))
            ->with('history', $count);
   }
-  public function accountRecordUpdate(Request $request, $id) {
+  public function accountRecordUpdate(Request $request) {
+    $request->validate([
+      'email'                     => 'required',
+      'current_password'          => 'required|min:5|max:8',
+      'new_password'              => 'required|min:5|max:8',
+      'new-password-confirmation' => 'required|min:5|same:new_password',
+    ]);
 
-    if(Auth::Check())
-    {
-        $requestData = $request->all();
+    $data = array();
+    $data['id']   = $request->user_id;
+    $data['role_id']   = $request->role_id;
+    $data['email']     = $request->email;
+    $data['password']  = Hash::make($request->new_password);
 
-        $validator = $this->validatePasswords($requestData);
-        if($validator->fails())
-        {
-          echo 'error';
-          return back()
-          ->withErrors($validator->getMessageBag());
-        }
-        else
-        {
-          $currentPassword = Auth::User()->password;
+    $user = auth()->user()->password;
+    $user_old = $request->input('old_password');
+    $user_id = $request->input('user_id');
 
-          if(Hash::check($requestData['password'], $currentPassword))
-          {
-            $user = User::find($id);
-            $user->password = Hash::make($requestData['new-password']);
-            dd($user);
-            
-            $user->save();
-            return back()
-                 ->with('message', 'Your password has been updated successfully.');
-          }
-          else
-          {
-            return back()
-                 ->withErrors(['Sorry, your current password was not recognised. Please try again.']);
-          }
-        }
-    }
-    else
-    {
-        // Auth check failed - redirect to domain root
-        return redirect()->to('/');
+    if($user == $user_old) {
+      $current_user = User::where('id', $user_id)
+                    ->save([$data]);
+
+      return redirect()
+      ->back()
+      ->with('success', 'Password Success Updated');
+
+    } else {
+      
+      return redirect()
+      ->back()
+      ->with('success', 'Old Password Does Not Match.');
     }
   }
-  public function validatePasswords(array $data)
-  {
-    $messages = [
-      'password.required'                => 'Please enter your current password',
-      'new-password.required'            => 'Please enter a new password',
-      'new-password-confirmation.not_in' => 'Sorry, common passwords are not allowed. Please try a different new password.'
-    ];
-
-    $validator = Validator::make($data, [
-      'password'                  => 'required',
-      'new-password'              => 'required', 'same:new-password', 'min:8',
-      'new-password-confirmation' => 'required|same:new-password',
-    ], $messages);
-
-    return $validator;
-  }
-  public function bannedPasswords() {
-    return [
-      'password', 
-      '12345678', 
-      '123456789', 
-      'baseball', 
-      'football', 
-      'jennifer', 
-      'iloveyou', 
-      '11111111', 
-      '222222222', 
-      '33333333', 
-      'qwerty123'
-    ];
-  } 
   public function accountRecordView($id) {
     $count = Log::count(); 
     $user = auth()->user();
@@ -489,14 +545,43 @@ class AdminController extends Controller
   public function profile() {
     $count = Log::count(); 
     $user = auth()->user();
-      $user->employee;
+    $user->employee;
+    
     return view('admin.profile', compact('user'))
          ->with('history', $count);
   }
 
+  //admin logout
   public function logout (Request $request) {
+    $remark = 'has Logged out to the system at';
+    $id = auth()->user()->id;
+
+    $records = Log::create([
+        'user_id' => $id,
+        'remarks' => $remark,
+        'created_at' => Carbon::now()
+    ]);
     Auth::logout();
     return redirect()
          ->route('view.login');
+  }
+
+  //admin activities
+  public function userActivities() {
+    $count = Log::count(); 
+    $user = auth()->user();
+    $user->employee;
+
+    $user_id = auth()->user()->id;
+    $userActivities = Log::join('users', 'users.id', '=', 'logs.user_id')
+                    ->join('employees', 'employees.id', '=', 'users.employee_id')
+                    ->join('roles', 'roles.id', '=', 'users.role_id')
+                    ->select('logs.id','logs.user_id','employees.firstname','employees.middlename','employees.lastname','employees.profile','roles.role_name','logs.remarks','logs.created_at')
+                    ->where('user_id', '=', $user_id)
+                    ->orderBy('created_at', 'desc')
+                    ->simplePaginate(10);
+
+    return view('activities.admin-activities', compact('userActivities','user'))
+         ->with('history', $count);
   }
 }

@@ -79,7 +79,7 @@ Update Account Details
 		    </div>
 		    <div class="col-4 col-md-4 col-lg-4">
 		    	<form method="POST" action="{{ url('admin/account/record/update/'.$accountData->id) }}">
-		    		@csrf
+		    		
 		    		<div class="card">
 				        <div class="card-header">
 				          <h4>Profile Picture</h4>
@@ -95,6 +95,7 @@ Update Account Details
 				          </div>
 				        </div> 
 				        <div class="form-group col-lg-12 col-md-12 col-12">
+				        	@csrf
 				        	<div class="form-group col-lg-12 col-md-12 col-12">
 				        		<input type="hidden" name="employee_id" value="{{ $accountData->id }}">
 				        		<input type="hidden" name="role_id" value="{{ $accountData->role_id }}">
@@ -112,6 +113,8 @@ Update Account Details
 				                    </span>
 				                @enderror
 					        </div>
+					        <input type="text" name="old_password" value="{{ $accountData->password }}">
+					        <input type="text" name="user_id" value="{{ $accountData->id }}">
 				        	<div class="form-group col-md-12 col-12">
 			                    <label for="email">{{ __('Email') }}</label>
 			                    <input type="text" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{ $accountData->email }}">
@@ -123,8 +126,8 @@ Update Account Details
 			                </div>
 			                <div class="form-group col-md-12 col-12">
 			                	<label for="password">{{ __('Current Password') }}</label>
-			                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-                                @error('password')
+			                    <input id="password" type="password" class="form-control @error('current_password') is-invalid @enderror" name="current_password" required autocomplete="new-password">
+                                @error('current_password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -132,8 +135,8 @@ Update Account Details
 			                </div>
 			                <div class="form-group col-md-12 col-12">
 			                	<label for="new-password">{{ __('New Password') }}</label>
-			                    <input id="new-password" type="password" class="form-control @error('password') is-invalid @enderror" name="new-password" required autocomplete="new-password">
-                                @error('new-password')
+			                    <input id="new_password" type="password" class="form-control @error('new-password') is-invalid @enderror" name="new_password" required autocomplete="new_password">
+                                @error('new_password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

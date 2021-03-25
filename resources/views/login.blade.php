@@ -48,8 +48,17 @@
     </form>
   </div>
 </div>
-<div class="mt-5 text-muted text-center">
-  Don't have an account? <a href="#">Create One</a>
-</div>
 @endsection
-
+@section('scripts')
+  <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+  <script>
+    @if(session('success'))
+      swal({
+        title: '{{ session('alertTitle') }}',
+        text:  '{{ session('success') }}',
+        icon:  '{{ session('alertIcon') }}',
+        button: "OK",
+      });
+    @endif
+  </script>
+@endsection

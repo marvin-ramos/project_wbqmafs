@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use auth;
+use Carbon\Carbon;
+use App\Log;
+use DB;
+use Session;
 
 class WbqmafsController extends Controller
 {
@@ -23,6 +27,15 @@ class WbqmafsController extends Controller
         {
             session(['check_login' => true ]);
 
+            $remark = 'has Logged In to the system at';
+            $id = auth()->user()->id;
+
+            $records = Log::create([
+                'user_id' => $id,
+                'remarks' => $remark,
+                'created_at' => Carbon::now()
+            ]);
+
             if (auth()->user()->role_id === 1) {
                 return redirect()
                    ->route('admin.dashboard')
@@ -34,9 +47,12 @@ class WbqmafsController extends Controller
             }
            
         }else{
+            Session::flash('alertTitle', 'Oppsss');
+            Session::flash('alertIcon', 'warning');
+
             return redirect()
-            ->route('view')
-            ->with('error','Your provided information wrong!');
+                 ->route('view.login')
+                 ->with('success','Your provided information wrong!');
         }
     }
 }

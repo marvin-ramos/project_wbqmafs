@@ -56,7 +56,16 @@
   <!-- Template JS File -->
   <script src="{{ asset('assets/js/scripts.js') }}"></script>
   <script src="{{ asset('assets/js/custom.js') }}"></script>
-
-  <!-- Page Specific JS File -->
+  <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+  <script>
+    @if(session('success'))
+      swal({
+        title: '{{ session('alertTitle') }}',
+        text:  '{{ session('success') }}',
+        icon:  '{{ session('alertIcon') }}',
+        button: "OK",
+      });
+    @endif
+  </script>
 </body>
 </html>

@@ -68,25 +68,23 @@ Edit Employee
 	                    </div>
 	                  </div>
 	                  <div class="form-group col-md-2 col-12">
-	                    <label for="age">{{ __('Age') }}</label>
-	                    <input type="text" name="age" id="age" class="form-control @error('age') is-invalid @enderror" value="{{ $employeeData->age }}" required="">
-	                    @error('address')
-	                      <span class="invalid-feedback" role="alert">
-	                        <strong>{{ $message }}</strong>
-	                      </span>
-	                    @enderror
-	                  </div>
-	                  <div class="form-group col-md-5 col-12">
-	                    <div class="form-group">
-	                      <label for="birthday">Birthday</label>
-	                      <input type="date" class="form-control @error('birthday') is-invalid @enderror" name="birthday" id="birthday" placeholder="MM/DD/YYYY" value="{{ $employeeData->birthday }}">
-	                      @error('address')
-	                        <span class="invalid-feedback" role="alert">
-	                          <strong>{{ $message }}</strong>
-	                        </span>
-	                      @enderror
-	                    </div>
-	                  </div>
+		                  <label for="age">{{ __('Age') }}</label>
+		                  <input type="text" class="form-control @error('age') is-invalid @enderror" id="age" name="age" value="{{ $employeeData->age }}">
+		                  @error('age')
+		                    <span class="invalid-feedback" role="alert">
+		                      <strong>{{ $message }}</strong>
+		                    </span>
+		                  @enderror
+		                </div>
+		                <div class="form-group col-md-5 col-12">
+		                  <label for="birthday">{{ __('Birthdate') }}</label>
+		                  <input type="date" name="birthday" id="birthday" class="form-control @error('birthdate') is-invalid @enderror" value="{{ $employeeData->birthday }}">
+		                  @error('birthday')
+		                    <span class="invalid-feedback" role="alert">
+		                      <strong>{{ $message }}</strong>
+		                    </span>
+		                  @enderror
+		                </div>
 	                </div>
 	                 <div class="row">
 	                  <div class="form-group col-md-7 col-12">
@@ -131,7 +129,7 @@ Edit Employee
 	              <div class="row">
 	                <div class="form-group col-lg-12 col-md-12 col-12">
 	                  <label for="profile">{{ __('Profile Picture') }}</label>
-	                  <input type="File" name="profile" id="profile" class="form-control" placeholder="Profile" onchange="previewFile(this);" required="">
+	                  <input type="File" name="profile" id="profile" class="form-control" placeholder="Profile" onchange="previewFile(this);">
 	                </div>
 	              </div>
 	              <div class="row">

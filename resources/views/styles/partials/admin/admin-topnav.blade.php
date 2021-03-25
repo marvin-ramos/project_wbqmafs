@@ -37,7 +37,7 @@
         <i class="far fa-user"></i> Profile
       </a>
       <div class="dropdown-divider"></div>
-      <a href="{{ route('logout.user') }}" class="dropdown-item has-icon">
+      <a href="{{ route('user.activities') }}" class="dropdown-item has-icon">
         <i class="fas fa-sign-out-alt"></i> Activities
       </a>
       <div class="dropdown-divider"></div>
