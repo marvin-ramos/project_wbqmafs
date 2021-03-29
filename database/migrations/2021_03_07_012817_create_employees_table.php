@@ -24,7 +24,7 @@ class CreateEmployeesTable extends Migration
                   ->on('genders')
                   ->onDelete('cascade');
             $table->string('age');
-            $table->date('birthday');
+            $table->string('birthday');
             $table->string('contact_number');
             $table->unsignedBigInteger('status_id')
                   ->unsigned()

@@ -9,6 +9,9 @@ use App\Log;
 use App\Employee;
 use DB;
 use App\Chart;
+use Hash;
+use Carbon\Carbon;
+use Session;
 
 class HomeController extends Controller
 {
@@ -138,4 +141,55 @@ class HomeController extends Controller
         return redirect()
              ->route('view.login');
     }
+
+    public function changePassword() {
+        $count = Log::count(); 
+        $user = auth()->user();
+        $user->employee;
+        
+        return view('change_password.user-change_password', compact('user'))
+             ->with('history', $count);
+    }
+    public function EditPassword(Request $request) { 
+
+    $request->validate([
+      'current_password' => 'required|min:5|max:20',
+      'new_password' => 'required|min:5|max:20|alpha_dash',
+      'new_confirm_password' => 'same:new_password',
+    ]);
+
+    $current_user = auth()->user();
+
+    if(Hash::check($request->current_password, $current_user->password)) {
+
+      $current_user->update([
+        'password' => Hash::make($request->new_password)
+      ]);
+
+      $remark = 'has updated its password in the system at';
+      $id = auth()->user()->id;
+
+      $records = Log::create([
+          'user_id' => $id,
+          'remarks' => $remark,
+          'created_at' => Carbon::now()
+      ]);
+
+      Session::flash('alertTitle', 'Success');
+      Session::flash('alertIcon', 'success');
+
+      return redirect()
+           ->route('user.change.password')
+           ->with('success', 'Password Successfully Updated');
+    }else{
+
+      Session::flash('alertTitle', 'Alert');
+      Session::flash('alertIcon', 'warning');
+
+      return redirect()
+           ->route('user.change.password')
+           ->with('success', 'Current Password Does not Matched');
+    }
+    // dd($current_user);
+  }
 }

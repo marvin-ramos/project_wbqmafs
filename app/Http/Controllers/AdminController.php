@@ -19,6 +19,8 @@ use App\PhLevel;
 use App\Chart;
 use App\Ponds;
 
+use App\Rules\MatchOldPassword;
+
 use File;
 use Hash;
 use Session;
@@ -94,8 +96,27 @@ class AdminController extends Controller
     $chart4->labels = (array_keys($phData));
     $chart4->dataset = (array_values($phData));
 
+    //for jumbo water chart
+    $ph_value = PhLevel::all();
+    $ph_avg = $ph_value->avg('ph_level');
+
+    //for jumbo temperature chart
+    $temp_value = Temperature::all();
+    $temp_avg = $temp_value->avg('temperature_level');
+
+    //for jumbo turbidity chart
+    $turbidity_value = Turbidity::all();
+    $turbidity_avg = $turbidity_value->avg('turbidity_level');
+
+    //for jumbo water chart
+    $water_value = Water::all();
+    $water_avg = $water_value->avg('water_level');
+
   	return view('admin.dashboard', compact('chart1','chart2','chart3','chart4','recentActivities','user'))
-  	     ->with('history', $count);
+         ->with('turbidity_avg', $turbidity_avg)
+         ->with('water_avg', $water_avg)
+         ->with('temp_avg', $temp_avg)
+         ->with('ph_avg', $ph_avg);
   }
 
   //for Employee
@@ -583,5 +604,58 @@ class AdminController extends Controller
 
     return view('activities.admin-activities', compact('userActivities','user'))
          ->with('history', $count);
+  }
+
+  //for change user password
+  public function changePassword() {
+    $count = Log::count(); 
+    $user = auth()->user();
+    $user->employee;
+    
+    return view('change_password.admin-change_password', compact('user'))
+         ->with('history', $count);
+  }
+
+  public function EditPassword(Request $request) { 
+
+    $request->validate([
+      'current_password' => 'required|min:5|max:20',
+      'new_password' => 'required|min:5|max:20|alpha_dash',
+      'new_confirm_password' => 'same:new_password',
+    ]);
+
+    $current_user = auth()->user();
+
+    if(Hash::check($request->current_password, $current_user->password)) {
+
+      $current_user->update([
+        'password' => Hash::make($request->new_password)
+      ]);
+
+      $remark = 'has updated its password in the system at';
+      $id = auth()->user()->id;
+
+      $records = Log::create([
+          'user_id' => $id,
+          'remarks' => $remark,
+          'created_at' => Carbon::now()
+      ]);
+
+      Session::flash('alertTitle', 'Success');
+      Session::flash('alertIcon', 'success');
+
+      return redirect()
+           ->route('admin.change.password')
+           ->with('success', 'Password Successfully Updated');
+    }else{
+
+      Session::flash('alertTitle', 'Alert');
+      Session::flash('alertIcon', 'warning');
+
+      return redirect()
+           ->route('admin.change.password')
+           ->with('success', 'Current Password Does not Matched');
+    }
+    // dd($current_user);
   }
 }

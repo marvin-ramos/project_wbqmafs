@@ -103,8 +103,8 @@ class TurbiditiesTableSeeder extends Seeder
          'turbidity_level'=> '189'
       	],[
          'turbidity_level'=> '157'
-	    ],[
-		'turbidity_level'=> '147'
+   	   ],[
+   		'turbidity_level'=> '147'
       	],[
          'turbidity_level'=> '478'
       	],[

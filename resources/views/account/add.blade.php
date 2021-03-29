@@ -68,10 +68,10 @@ Create Account
 		                    </div>
 		                  </div>
 		                </div>
-		                <div class="row">
+		                <div class="row" style="height: 375px;">
 		                  <div class="form-group col-md-12 col-12">
 		                    <label for="address">{{ __('Address') }}</label>
-		                    <textarea class="form-control summernote-simple @error('address') is-invalid @enderror" name="address" id="address" disabled="">{{ $employeeData->address }}</textarea>
+		                    <textarea class="form-control summernote-simple" id="address" style="height: 100%;" disabled="">{{ $employeeData->address }}</textarea>
 		                  </div>
 		                </div>
 		            </div>
@@ -89,28 +89,29 @@ Create Account
 				          <div class="card-body" style="text-align:center;">
 				            <div class="author">
 				              <a href="#">
-				                <img class="avatar border-gray" id="staffPic" style="width:200px;height:200px;" src="{{ URL::to($employeeData->profile) }}">
+				                <img class="avatar border-gray" id="staffPic" style="width:150px;height:150px;" src="{{ URL::to($employeeData->profile) }}">
 				                <input type="hidden" name="old_profile" value="{{ $employeeData->profile }}">
 				              </a>
 				            </div>
 				          </div>
 				        </div>
 				        <div class="form-group col-lg-12 col-md-12 col-12">
-				        	<input type="hidden" name="employee_id" value="{{ $employeeData->id}}">
-				        	<select class="form-control @error('role_id') is-invalid @enderror" name="role_id" id="role_id">
-				        		<option  value="" disabled selected>Select Role</option>
-				        		@foreach($roleData as $role)
-			                        <option value="{{ $role->id }}">{{ $role->role_name }}</option>
-			                    @endforeach
-				        	</select>
-				        	@error('role_id')
-			                    <span class="invalid-feedback" role="alert">
-			                      <strong>{{ $message }}</strong>
-			                    </span>
-			                @enderror
-				        </div>
-				        <div class="form-group col-lg-12 col-md-12 col-12">
 				        	<div class="form-group col-md-12 col-12">
+					        	<input type="hidden" name="employee_id" value="{{ $employeeData->id}}">
+					        	<label for="role_id">{{ __('Role As') }}</label>
+					        	<select class="form-control @error('role_id') is-invalid @enderror" name="role_id" id="role_id">
+					        		<option  value="" disabled selected>Select Role</option>
+					        		@foreach($roleData as $role)
+				                        <option value="{{ $role->id }}">{{ $role->role_name }}</option>
+				                    @endforeach
+					        	</select>
+					        	@error('role_id')
+				                    <span class="invalid-feedback" role="alert">
+				                      <strong>{{ $message }}</strong>
+				                    </span>
+				                @enderror
+				            </div>
+				        	<div class="form-group col-12 col-md-12 col-12">
 			                    <label for="email">{{ __('Email') }}</label>
 			                    <input type="text" name="email" id="email" class="form-control @error('email') is-invalid @enderror">
 			                    @error('email')
@@ -119,7 +120,7 @@ Create Account
 				                    </span>
 				                @enderror
 			                </div>
-			                <div class="form-group col-md-12 col-12">
+			                <div class="form-group col-12 col-md-12 col-12">
 			                	<label for="email">{{ __('Password') }}</label>
 			                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
                                 @error('password')
@@ -128,7 +129,7 @@ Create Account
                                     </span>
                                 @enderror
 			                </div>
-			                <div class="form-group col-md-12 col-12">
+			                <div class="form-group col-12 col-md-12 col-12">
 			                	<label for="password-confirm" class="col-form-label text-md-right">{{ __('Confirm Password') }}</label>
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
 			                </div>

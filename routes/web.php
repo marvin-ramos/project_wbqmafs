@@ -85,7 +85,12 @@ Route::prefix('admin')->group(function () {
 
 	//for user activities
 	Route::get('user/activities', 'AdminController@userActivities')
-		  ->name('user.activities');
+		  ->name('admin.activities');
+
+	Route::get('change/password', 'AdminController@changePassword')
+	     ->name('admin.change.password');
+	Route::post('edit/password', 'AdminController@EditPassword')
+		 ->name('edit.password');
 });
 
 Route::prefix('user')->group(function () {
@@ -95,5 +100,9 @@ Route::prefix('user')->group(function () {
 		 ->name('user.profile');
 	Route::get('activities', 'HomeController@userActivities')
 		  ->name('user.activities');
+	Route::get('change/password', 'HomeController@changePassword')
+		  ->name('user.change.password');
+	Route::post('edit/password','HomeController@EditPassword')
+	      ->name('edit.password');
 	Route::get('/logout', 'HomeController@logout');
 });

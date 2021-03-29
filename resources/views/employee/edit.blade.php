@@ -67,18 +67,13 @@ Edit Employee
 	                      @enderror
 	                    </div>
 	                  </div>
-	                  <div class="form-group col-md-2 col-12">
-		                  <label for="age">{{ __('Age') }}</label>
-		                  <input type="text" class="form-control @error('age') is-invalid @enderror" id="age" name="age" value="{{ $employeeData->age }}">
-		                  @error('age')
-		                    <span class="invalid-feedback" role="alert">
-		                      <strong>{{ $message }}</strong>
-		                    </span>
-		                  @enderror
-		                </div>
+		                <div class="form-group col-md-2 col-12">
+			                <label for="age">{{ __('Age') }}</label>
+		                  	<input type="text" class="form-control" id="age" name="age" value="{{ $employeeData->age }}" required="">
+			            </div>
 		                <div class="form-group col-md-5 col-12">
-		                  <label for="birthday">{{ __('Birthdate') }}</label>
-		                  <input type="date" name="birthday" id="birthday" class="form-control @error('birthdate') is-invalid @enderror" value="{{ $employeeData->birthday }}">
+		                  <label for="birth_date">{{ __('Birthdate') }}</label>
+		                  <input type="text" name="birthday" id="birth_date" class="form-control @error('birthdate') is-invalid @enderror" value="{{ $employeeData->birthday }}" placeholder="DD/MM/YYYY">
 		                  @error('birthday')
 		                    <span class="invalid-feedback" role="alert">
 		                      <strong>{{ $message }}</strong>
@@ -116,7 +111,7 @@ Edit Employee
 	                <div class="row">
 	                  <div class="form-group col-md-12 col-12">
 	                    <label for="address">{{ __('Address') }}</label>
-	                    <textarea class="form-control summernote-simple @error('address') is-invalid @enderror" name="address" id="address">{{ $employeeData->address }}</textarea>
+	                    <textarea class="form-control summernote-simple @error('address') is-invalid @enderror" name="address" id="address" style="height: 100%;">{{ $employeeData->address }}</textarea>
 	                    @error('address')
 	                      <span class="invalid-feedback" role="alert">
 	                        <strong>{{ $message }}</strong>
@@ -192,4 +187,23 @@ Edit Employee
 	</div>
   </div>
 </section>
+@endsection
+@section('scripts')
+	<script>
+	function calculateAge(date) 
+	{
+	  const now = new Date();
+	  const diff = Math.abs(now - date );
+	  const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365)); 
+	  return age
+	}
+	var picker = new Pikaday({ 
+	  field: document.getElementById('birth_date') ,
+	  yearRange:[1900,2020],
+	  onSelect: function(date) {
+		let age = calculateAge(date);
+		document.getElementById('age').value = age ;
+	  }                        
+	});
+	</script>
 @endsection

@@ -52,7 +52,7 @@ Edit Employee
 		                  <div class="form-group col-md-5 col-12">
 		                    <div class="form-group">
 		                      <label for="gender_id">{{ __('Gender') }}</label>
-		                      <select name="gender_id" id="gender_id" class="form-control @error('gender_id') is-invalid @enderror">
+		                      <select name="gender_id" id="gender_id" class="form-control @error('gender_id') is-invalid @enderror" disabled="">
 		                        <option  value="{{ $employeeData->gender_id }}">{{ $employeeData->gender }}</option>
 		                        @foreach($genderData as $gender)
 		                          <option value="{{ $gender->id }}">{{ $gender->gender }}</option>
@@ -77,7 +77,7 @@ Edit Employee
 		                  <div class="form-group col-md-5 col-12">
 		                    <div class="form-group">
 		                      <label for="birthday">Birthday</label>
-		                      <input type="date" class="form-control @error('birthday') is-invalid @enderror" name="birthday" id="birthday" placeholder="MM/DD/YYYY" value="{{ $employeeData->birthday }}">
+		                      <input type="date" class="form-control @error('birthday') is-invalid @enderror" name="birthday" id="birthday" placeholder="MM/DD/YYYY" value="{{ $employeeData->birthday }}" disabled="">
 		                      @error('address')
 		                        <span class="invalid-feedback" role="alert">
 		                          <strong>{{ $message }}</strong>
@@ -99,7 +99,7 @@ Edit Employee
 		                  <div class="form-group col-md-5 col-12">
 		                    <div class="form-group">
 		                      <label for="status_id">{{ __('Civil Status') }}</label>
-		                      <select class="form-control @error('status_id') is-invalid @enderror" id="status_id" name="status_id">
+		                      <select class="form-control @error('status_id') is-invalid @enderror" id="status_id" name="status_id" disabled="">
 		                        <option  value="{{ $employeeData->status_id }}">{{ $employeeData->status }}</option>
 		                        @foreach($statusData as $status)
 		                          <option value="{{ $status->id }}">{{ $status->status }}</option>
@@ -116,7 +116,7 @@ Edit Employee
 		                <div class="row">
 		                  <div class="form-group col-md-12 col-12">
 		                    <label for="address">{{ __('Address') }}</label>
-		                    <textarea class="form-control summernote-simple @error('address') is-invalid @enderror" name="address" id="address">{{ $employeeData->address }}</textarea>
+		                    <textarea class="form-control summernote-simple @error('address') is-invalid @enderror" name="address" id="address" style="height: 100%;" disabled="">{{ $employeeData->address }}</textarea>
 		                    @error('address')
 		                      <span class="invalid-feedback" role="alert">
 		                        <strong>{{ $message }}</strong>
