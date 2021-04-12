@@ -38,13 +38,10 @@ Account
                   <td>{{ $employee->middlename }}</td>
                   <td><img src="{{ URL::to($employee->profile) }}" style="width: 50px;height: 50px;border-radius: 50%;"></td>
                   <td style="text-align: center;">
-                    <a href="{{ URL::to('/admin/account/record/edit/'.$employee->id) }}" class="btn btn-icon icon-left btn-info" style="width: 32%;">
-                      <i class="fa fa-edit"></i> Update
-                    </a>
-                    <a href="{{ URL::to('/admin/account/record/view/'.$employee->id) }}" class="btn btn-icon icon-left btn-warning" style="width: 32%;">
+                    <a href="{{ URL::to('/admin/account/record/view/'.$employee->id) }}" class="btn btn-icon icon-left btn-warning" style="width: 40%;">
                       <i class="fa fa-eye"></i> Show
                     </a>
-                    <a class="btn btn-icon icon-left btn-danger"  onclick="return confirmationDeleteEmployee();" style="width:32%;color:#fff;">
+                    <a class="btn btn-icon icon-left btn-danger"  onclick="return confirmationDeleteEmployee();" style="width:40%;color:#fff;">
                       <i class="fa fa-trash-alt"></i> Delete
                     </a>
                       <script src="{{ asset('js/sweetalert.min.js') }}"></script>
@@ -58,7 +55,7 @@ Account
                             dangerMode: true,
                           }).then(okay => {
                             if(okay) {
-                              window.location.href = "{{ URL::to('/admin/employee/delete/'.$employee->id) }}";
+                              window.location.href = "{{ URL::to('/admin/account/record/delete/'.$employee->id) }}";
                             }
                           });
                         }

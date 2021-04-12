@@ -67,10 +67,10 @@ Update Account Details
 		                    </div>
 		                  </div>
 		                </div>
-		                <div class="row">
+		                <div class="row" style="height: 172px;">
 		                  <div class="form-group col-md-12 col-12">
 		                    <label for="address">{{ __('Address') }}</label>
-		                    <textarea class="form-control summernote-simple @error('address') is-invalid @enderror" name="address" id="address" disabled="">{{ $accountData->address }}</textarea>
+    						<textarea class="form-control" id="address" style="height: 100%;" disabled="">{{ $accountData->address }}</textarea>
 		                  </div>
 		                </div>
 		            </div>
@@ -96,6 +96,7 @@ Update Account Details
 				        </div>
 				        <div class="form-group col-lg-12 col-md-12 col-12">
 				        	<div class="form-group col-lg-12 col-md-12 col-12">
+				        		<label for="role_id">{{ __('Role As') }}</label>
 					        	<select class="form-control @error('role_id') is-invalid @enderror" name="role_id" id="role_id" disabled="">
 					        		<option  value="{{ $accountData->role_id }}">{{ $accountData->role_name }}</option>
 					        		@foreach($roleData as $role)
@@ -107,13 +108,6 @@ Update Account Details
 			                    <label for="email">{{ __('Email') }}</label>
 			                    <input type="text" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{ $accountData->email }}" disabled="">
 			                </div>
-			                <div class="form-group col-md-12 col-12">
-			                	<label for="email">{{ __('Password') }}</label>
-			                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" disabled="">
-			                </div>
-			                <div class="form-group col-lg-12 col-md-12 col-12">
-				                <button type="submit" class="btn btn-primary pr" style="width:100%;">Update</button>
-				            </div>
 			                <div class="form-group col-md-12 col-12">
 			                	<script src="{{ asset('js/sweetalert.min.js') }}"></script>
 								<a class="btn btn-danger" style="width:100%;color:white;" onclick="return confirmation()">Back</a>

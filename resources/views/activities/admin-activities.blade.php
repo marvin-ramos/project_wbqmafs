@@ -1,13 +1,13 @@
 @extends('layouts.admin-master')
 
 @section('title')
-History
+Activities
 @endsection
 
 @section('content')
 <section class="section">
   <div class="section-header">
-    <h1>History</h1>
+    <h1>Activities</h1>
   </div>
 
 	<div class="section-body">
@@ -15,7 +15,7 @@ History
 			<div class="col-lg-12 col-md-12 col-12 col-sm-12">
 		        <div class="card">
 		          <div class="card-header">
-		            <h4>History</h4>
+		            <h4>Activities</h4>
 		          </div>
 		          <div class="card-body">
 		            <table class="table">

@@ -1,63 +1,58 @@
-/*
- * Arduino communication with  a web server example
- */
- 
-#include <ESP8266WiFi.h>
-#include <WiFiClient.h> 
-#include <ESP8266WebServer.h>
-#include <ESP8266HTTPClient.h>
- 
-const char *ssid = "SKYbroadband76FC";  
-const char *password = "176694507";
- 
-//Web/Server address to read/write from 
-const char *host = "http://127.0.0.1:8000/";   //your IP/web server address
+#include <SPI.h>
+#include <Ethernet.h>
+
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+IPAddress ip(192,168,0,117);
+EthernetClient client;
+
+int analogInPin = A0; 
+int LED = 13;
+int gate_in = 0;
+
+char server[] = "192.168.0.105"; 
 
 void setup() {
-  delay(1000);
-  Serial.begin(115200);
-  WiFi.mode(WIFI_OFF);        //Prevents reconnection issue (taking too long to connect)
-  delay(1000);
-  WiFi.mode(WIFI_STA);        //This line hides the viewing of ESP as wifi hotspot
-  
-  WiFi.begin(ssid, password);     //Connect to your WiFi router
-  Serial.println("");
+  Serial.begin(9600); 
+  pinMode(LED, OUTPUT);
+  Ethernet.begin(mac, ip);
+}
+
+void loop() {
  
-  Serial.print("Connecting");
-  // Wait for connection
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
+  float gate_in = analogRead(analogInPin);
+ 
+  // Connect to the server (your computer or web page)  
+  if (client.connect(server, 80)) {
+    Serial.println("connected");
+
+    //for browser
+    client.print("GET /project/data.php?");
+    client.print("gate_in="); 
+    client.print(gate_in); 
+    client.println(" HTTP/1.1"); // Part of the GET request
+    client.println("Host: 192.168.0.105"); 
+    client.println("Connection: close"); 
+    client.println(); // Empty line
+    client.println(); // Empty line
+
+    //Printing the values on the serial monitor
+    Serial.print("gate_in= ");
+    Serial.println(gate_in);
+    digitalWrite(LED,HIGH);
+
+    if(gate_in <= 50){
+      digitalWrite(LED,HIGH);
+    }else {
+      digitalWrite(LED,LOW);
+    }
+    
+    client.stop();
+  }
+
+  else {
+    // If Arduino can't connect to the server (your computer or web page)
+    Serial.println("--> connection failed\n");
   }
  
-  //If connection successful show IP address in serial monitor
-  Serial.println("");
-  Serial.print("Connected to ");
-  Serial.println(ssid);
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());  //IP address assigned to your ESP
-}
- 
-void loop() {
-  //Declare object of class HTTPClient
-  HTTPClient http;
-
-  //Prepare data
-  String temperature, humidity, postData;
-  int tmp_value=random(10, 25);
-  int h_value=random(40, 80);
-  temperature = String(tmp_value);
-  humidity = String(h_value);
- 
-  //prepare request
-  postData = "temperature=" + temperature + "&humidity=" + humidity ;
-  http.begin(host);
-  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-  int httpCode = http.POST(postData);
-  String payload = http.getString();
- 
-  Serial.println(httpCode);
-  Serial.println(payload);
-  http.end();
   delay(5000);
 }

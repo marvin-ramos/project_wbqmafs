@@ -24,9 +24,6 @@
         <div class="d-block">
             <label for="password" class="control-label">Password</label>
           <div class="float-right">
-            <a href="#" class="text-small">
-              Forgot Password?
-            </a>
           </div>
         </div>
         <input aria-describedby="passwordHelpBlock" id="password" type="password" placeholder="Your account password" class="form-control{{ $errors->has('password') ? ' is-invalid': '' }}" name="password" tabindex="2">

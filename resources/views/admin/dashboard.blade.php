@@ -15,14 +15,14 @@ Dashboard
 	        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
 	          <div class="card card-statistic-1">
 	            <div class="card-icon bg-primary">
-	              <i class="fa fa-user"></i>
+	              <i class="fa fa-hand-holding-water" style="color: #fff;font-size: 30px;"></i>
 	            </div>
 	            <div class="card-wrap">
 	              <div class="card-header">
-	                <h4>Employee</h4>
+	                <h6>PH Level</h6>
 	              </div>
 	              <div class="card-body">
-	                10
+	                <h6>{{ $ph_avg }}%</h6>
 	              </div>
 	            </div>
 	          </div>
@@ -30,29 +30,29 @@ Dashboard
 	        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
 	          <div class="card card-statistic-1">
 	            <div class="card-icon bg-danger">
-	              <i class="fa fa-newspaper"></i>
+	              <i class="fa fa-temperature-high" style="color: #fff;font-size: 30px;"></i>
 	            </div>
 	            <div class="card-wrap">
 	              <div class="card-header">
-	                <h4>Accounts</h4>
+	                <h6>Temperature Level</h6>
 	              </div>
 	              <div class="card-body">
-	                42
+	              	<h6>{{ $temp_avg }}%</h6>
 	              </div>
 	            </div>
 	          </div>
 	        </div>
 	        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
 	          <div class="card card-statistic-1">
-	            <div class="card-icon bg-warning">
-	              <i class="fa fa-file"></i>
+	            <div class="card-icon bg-secondary">
+	              <i class="fa fa-flask" style="color: #fff;font-size: 30px;"></i>
 	            </div>
 	            <div class="card-wrap">
 	              <div class="card-header">
-	                <h4>Feeder</h4>
+	                <h6>Turbidity Level</h6>
 	              </div>
 	              <div class="card-body">
-	                1,201
+	               <h6>{{ $turbidity_avg }}%</h6>
 	              </div>
 	            </div>
 	          </div>
@@ -60,14 +60,14 @@ Dashboard
 	        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
 	          <div class="card card-statistic-1">
 	            <div class="card-icon bg-success">
-	              <i class="fa fa-circle"></i>
+	              <i class="fa fa-glass-whiskey" style="color: #fff;font-size: 30px;"></i>
 	            </div>
 	            <div class="card-wrap">
 	              <div class="card-header">
-	                <h4>History</h4>
+	                <h6>Water Level</h6>
 	              </div>
 	              <div class="card-body">
-	                47
+	                <h6>{{ $water_avg }}%</h6>
 	              </div>
 	            </div>
 	          </div>
@@ -106,48 +106,6 @@ Dashboard
 	                <a href="{{ route('history') }}" class="btn btn-primary btn-lg btn-round">
 	                  View All
 	                </a>
-	              </div>
-	            </div>
-	          </div>
-	        </div>
-	    </div>
-	    <div class="row">
-	        <div class="col-lg-12 col-md-12 col-12">
-	          <div class="card">
-	            <div class="card-header">
-	              <h4>Water Parameters</h4>
-	            </div>
-	            <div class="card-body">
-	              <div class="mb-4">
-	                <div class="text-small float-right font-weight-bold text-muted">2,100</div>
-	                <div class="font-weight-bold mb-1">Temperature</div>
-	                <div class="progress" data-height="3">
-	                  <div class="progress-bar" role="progressbar" data-width="80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-	                </div>
-	              </div>
-
-	              <div class="mb-4">
-	                <div class="text-small float-right font-weight-bold text-muted">1,880</div>
-	                <div class="font-weight-bold mb-1">pH</div>
-	                <div class="progress" data-height="3">
-	                  <div class="progress-bar" role="progressbar" data-width="67%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-	                </div>
-	              </div>
-
-	              <div class="mb-4">
-	                <div class="text-small float-right font-weight-bold text-muted">1,521</div>
-	                <div class="font-weight-bold mb-1">Water</div>
-	                <div class="progress" data-height="3">
-	                  <div class="progress-bar" role="progressbar" data-width="58%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-	                </div>
-	              </div>
-
-	              <div class="mb-4">
-	                <div class="text-small float-right font-weight-bold text-muted">884</div>
-	                <div class="font-weight-bold mb-1">Turbidity</div>
-	                <div class="progress" data-height="3">
-	                  <div class="progress-bar" role="progressbar" data-width="36%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-	                </div>
 	              </div>
 	            </div>
 	          </div>

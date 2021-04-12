@@ -19,6 +19,8 @@ use App\PhLevel;
 use App\Chart;
 use App\Ponds;
 
+use App\Rules\MatchOldPassword;
+
 use File;
 use Hash;
 use Session;
@@ -43,7 +45,7 @@ class AdminController extends Controller
                    ->join('employees', 'employees.id', '=', 'users.employee_id')
                    ->join('roles', 'roles.id', '=', 'users.role_id')
                    ->select('logs.id','employees.firstname','employees.middlename','employees.lastname','employees.profile','roles.role_name','logs.remarks','logs.created_at')
-                   ->orderBy('created_at', 'desc')
+                   ->orderBy('id', 'asc')
                    ->simplePaginate(4); 
 
     //for water data here
@@ -94,8 +96,27 @@ class AdminController extends Controller
     $chart4->labels = (array_keys($phData));
     $chart4->dataset = (array_values($phData));
 
+    //for jumbo water chart
+    $ph_value = PhLevel::all();
+    $ph_avg = $ph_value->avg('ph_level');
+
+    //for jumbo temperature chart
+    $temp_value = Temperature::all();
+    $temp_avg = $temp_value->avg('temperature_level');
+
+    //for jumbo turbidity chart
+    $turbidity_value = Turbidity::all();
+    $turbidity_avg = $turbidity_value->avg('turbidity_level');
+
+    //for jumbo water chart
+    $water_value = Water::all();
+    $water_avg = $water_value->avg('water_level');
+
   	return view('admin.dashboard', compact('chart1','chart2','chart3','chart4','recentActivities','user'))
-  	     ->with('history', $count);
+         ->with('turbidity_avg', $turbidity_avg)
+         ->with('water_avg', $water_avg)
+         ->with('temp_avg', $temp_avg)
+         ->with('ph_avg', $ph_avg);
   }
 
   //for Employee
@@ -325,36 +346,52 @@ class AdminController extends Controller
          ->with('history', $count);
   }
   public function accountStore(Request $request) {
-    $request->validate([
+    $request->validate([      
+        'employee_id'           => 'required',
         'email'                 => 'required|string|email|max:255|unique:users',
         'password'              => 'required|string|min:8|confirmed',
         'password_confirmation' => 'required',
     ]);
 
-    User::create([
+    $employee_account = User::where([
+            ['employee_id', '=', $request->get('employee_id')],
+            ])->first();
+
+    if ($employee_account == null ) 
+    {
+      
+      User::create([
         'employee_id'  => $request->employee_id,
         'email'        => $request->email,
         'password'     => Hash::make($request->password),
         'role_id'      => $request->role_id,
-    ]);
+      ]);
 
-    $email = $request->email; 
-    
-    $id = auth()->user()->id;
-    $remark = 'has created '. $email .' account to the system';
+      $email = $request->email; 
+      
+      $id = auth()->user()->id;
+      $remark = 'has created '. $email .' account to the system';
 
-    $records = Log::create([
-        'user_id' => $id,
-        'remarks' => $remark,
-        'created_at' => Carbon::now()
-    ]);
+      $records = Log::create([
+          'user_id' => $id,
+          'remarks' => $remark,
+          'created_at' => Carbon::now()
+      ]);
 
-    Session::flash('alertTitle', 'Success');
-    Session::flash('alertIcon', 'success');
+      Session::flash('alertTitle', 'Success');
+      Session::flash('alertIcon', 'success');
 
-    return redirect()
-           ->route('table.account')
-           ->with('success', 'Account has created Successfully');
+      return redirect()
+             ->route('table.account')
+             ->with('success', 'Account has created Successfully');
+
+    } else {
+      Session::flash('alertTitle', 'Opps');
+      Session::flash('alertIcon', 'warning');
+
+      return back()
+             ->with('success', 'Employee has Already have an account');
+    }
   }
   public function accountRecord() {
     $count = Log::count(); 
@@ -432,6 +469,27 @@ class AdminController extends Controller
     return view('account.account_record_view', compact('accountData','user', 'roleData'))
          ->with('history', $count);
   }
+  public function accountRecordDelete($id) {
+    $remark = 'has deleted an account in the system at';
+    $user_id = auth()->user()->id;
+
+    $records = Log::create([
+        'user_id' => $user_id,
+        'remarks' => $remark,
+        'created_at' => Carbon::now()
+    ]);
+
+    $data = User::find($id)
+            ->where('id', $id)
+            ->delete();
+
+    Session::flash('alertTitle', 'Success');
+    Session::flash('alertIcon', 'success');
+
+    return Redirect()
+        ->route('table.employee')
+        ->with('success','Greate! Employee deleted successfully.');
+  }
 
   //for system history
   public function history() {
@@ -442,7 +500,8 @@ class AdminController extends Controller
                   ->join('roles', 'roles.id', '=', 'users.role_id')
                   ->join('employees', 'employees.id', '=', 'users.employee_id')
                   ->select('logs.id','employees.firstname','employees.middlename','employees.lastname','roles.role_name', 'logs.remarks', 'logs.created_at')
-                  ->get();
+                  ->orderBy('id', 'asc')
+                  ->simplePaginate(15);
     return view('history.history', compact('activityData','user'))
          ->with('history', $count);
   }
@@ -578,10 +637,63 @@ class AdminController extends Controller
                     ->join('roles', 'roles.id', '=', 'users.role_id')
                     ->select('logs.id','logs.user_id','employees.firstname','employees.middlename','employees.lastname','employees.profile','roles.role_name','logs.remarks','logs.created_at')
                     ->where('user_id', '=', $user_id)
-                    ->orderBy('created_at', 'desc')
-                    ->simplePaginate(10);
+                    ->orderBy('id', 'asc')
+                   ->simplePaginate(15); 
 
     return view('activities.admin-activities', compact('userActivities','user'))
          ->with('history', $count);
+  }
+
+  //for change user password
+  public function changePassword() {
+    $count = Log::count(); 
+    $user = auth()->user();
+    $user->employee;
+    
+    return view('change_password.admin-change_password', compact('user'))
+         ->with('history', $count);
+  }
+
+  public function EditPassword(Request $request) { 
+
+    $request->validate([
+      'current_password' => 'required|min:5|max:20',
+      'new_password' => 'required|min:5|max:20|alpha_dash',
+      'new_confirm_password' => 'same:new_password',
+    ]);
+
+    $current_user = auth()->user();
+
+    if(Hash::check($request->current_password, $current_user->password)) {
+
+      $current_user->update([
+        'password' => Hash::make($request->new_password)
+      ]);
+
+      $remark = 'has updated its password in the system at';
+      $id = auth()->user()->id;
+
+      $records = Log::create([
+          'user_id' => $id,
+          'remarks' => $remark,
+          'created_at' => Carbon::now()
+      ]);
+
+      Session::flash('alertTitle', 'Success');
+      Session::flash('alertIcon', 'success');
+
+      return redirect()
+           ->route('admin.change.password')
+           ->with('success', 'Password Successfully Updated');
+    }else{
+
+      Session::flash('alertTitle', 'Alert');
+      Session::flash('alertIcon', 'warning');
+
+      return redirect()
+           ->route('admin.change.password')
+           ->with('success', 'Current Password Does not Matched');
+    }
+    // dd($current_user);
   }
 }

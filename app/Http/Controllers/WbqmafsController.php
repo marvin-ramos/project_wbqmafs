@@ -55,4 +55,4 @@ class WbqmafsController extends Controller
                  ->with('success','Your provided information wrong!');
         }
     }
-}
+} 

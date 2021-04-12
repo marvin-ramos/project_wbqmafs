@@ -19,7 +19,7 @@ Dashboard
 	            <h4>Register Employee</h4>
 	          </div>
 	          <div class="card-body">
-	              {{ csrf_field() }}
+	              @csrf
 	              <div class="row">
 	                <div class="form-group col-md-5 col-12">                    
 	                  <label for="firstname">{{ __('Firstname') }}</label>
@@ -68,17 +68,11 @@ Dashboard
 	                </div>
 	                <div class="form-group col-md-2 col-12">
 	                  <label for="age">{{ __('Age') }}</label>
-	                  <input type="text" class="form-control @error('age') is-invalid @enderror" value="" id="age" name="age" onchange="calculateAge(this);">
-	                  <!-- <div id="age" name="age" class="form-control" style="border: 1px solid #e4e6fc;"></div> -->
-	                  @error('age')
-	                    <span class="invalid-feedback" role="alert">
-	                      <strong>{{ $message }}</strong>
-	                    </span>
-	                  @enderror
+	                  <input type="text" class="form-control" id="age" name="age" value="{{ old('age') }}">
 	                </div>
 	                <div class="form-group col-md-5 col-12">
-	                  <label for="birthday">{{ __('Birthdate') }}</label>
-	                  <input type="date" name="birthday" id="birthday" class="form-control @error('birthdate') is-invalid @enderror" value="{{ old('birthday') }}" placeholder="DD/MM/YYYY">
+	                  <label for="birth_date">{{ __('Birthdate') }}</label>
+	                  <input type="text" name="birthday" id="birth_date" class="form-control @error('birthdate') is-invalid @enderror" value="{{ old('birthday') }}" placeholder="DD/MM/YYYY">
 	                  @error('birthday')
 	                    <span class="invalid-feedback" role="alert">
 	                      <strong>{{ $message }}</strong>
@@ -116,7 +110,7 @@ Dashboard
 	              <div class="row">
 	                <div class="form-group col-md-12 col-12">
 	                  <label for="address">{{ __('Address') }}</label>
-	                  <textarea name="address" id="address" class="form-control summernote-simple @error('address') is-invalid @enderror">{{ old('address') }}</textarea>
+	                  <textarea name="address" id="address" class="form-control summernote-simple @error('address') is-invalid @enderror" style="height: 100%;">{{ old('address') }}</textarea>
 	                  @error('address')
 	                    <span class="invalid-feedback" role="alert">
 	                      <strong>{{ $message }}</strong>
@@ -176,9 +170,8 @@ Dashboard
 	  field: document.getElementById('birth_date') ,
 	  yearRange:[1900,2020],
 	  onSelect: function(date) {
-	  let age = calculateAge(date);
-	  // document.getElementById('age').innerHTML = age ;
-	  return age;
+		let age = calculateAge(date);
+		document.getElementById('age').value = age ;
 	  }                        
 	});
 	</script>
