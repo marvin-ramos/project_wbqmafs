@@ -8,8 +8,8 @@ class Chart extends Model
 {
     protected $fillable = [
     	'water_level',
-    	'temperature_level',
     	'ph_level',
+    	'temperature_level',
     	'turbidity_level',
     ];
 }

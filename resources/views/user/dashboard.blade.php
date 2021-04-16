@@ -12,39 +12,13 @@ Dashboard
 
 	<div class="section-body">
 	    <div class="row">
-	        <div class="col-lg-8 col-md-12 col-12 col-sm-12">
+	        <div class="col-lg-12 col-md-12 col-12 col-sm-12">
 	          <div class="card">
 	            <div class="card-header">
 	              <h4>Parameters</h4>	
 	            </div>
 	            <div class="card-body">
 	              	<canvas id="sensorData" height="245"></canvas>
-	            </div>
-	          </div>
-	        </div>
-	        <div class="col-lg-4 col-md-12 col-12 col-sm-12">
-	          <div class="card">
-	            <div class="card-header">
-	              <h4>Recent Activities</h4>
-	            </div>
-	            <div class="card-body">
-	              <ul class="list-unstyled list-unstyled-border">
-	                @foreach($recentActivities as $activities)
-	                <li class="media">
-	                  <img class="mr-3 rounded-circle" width="50" src="{{ URL::to($activities->profile) }}" alt="avatar" style="width: 89px;height: 89px;">
-	                  <div class="media-body">
-	                    <div class="float-right text-primary" style="text-transform: uppercase;">{{ $activities->role_name }}</div>
-	                    <div class="media-title">{{ $activities->firstname }} {{ $activities->middlename }} {{ $activities->lastname }}</div>
-	                    <span class="text-small text-muted">{{ $activities->remarks }}.</span>
-	                  </div>
-	                </li>
-	                @endforeach
-	              </ul>
-	              <div class="text-center pt-1 pb-1">
-	                <a href="{{ route('history') }}" class="btn btn-primary btn-lg btn-round">
-	                  View All
-	                </a>
-	              </div>
 	            </div>
 	          </div>
 	        </div>

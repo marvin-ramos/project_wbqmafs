@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Collection;
 
 use App\Log;
 use App\Employee;
@@ -49,7 +50,7 @@ class AdminController extends Controller
                    ->simplePaginate(4); 
 
     //for water data here
-    $waterData = DB::table('waters')
+    $waterData = DB::table('sensor_data')
             ->select('water_level')
             ->groupBy('water_level')
             ->orderBy('id', 'asc')
@@ -61,7 +62,7 @@ class AdminController extends Controller
     $chart1->dataset = (array_values($waterData));
 
     //for temperature data
-    $temperatureData = DB::table('temperatures')
+    $temperatureData = DB::table('sensor_data')
             ->select('temperature_level')
             ->groupBy('temperature_level')
             ->orderBy('id', 'asc')
@@ -73,7 +74,7 @@ class AdminController extends Controller
     $chart2->dataset = (array_values($temperatureData));
 
     //for turbidity data
-    $turbidityData = DB::table('turbidities')
+    $turbidityData = DB::table('sensor_data')
             ->select('turbidity_level')
             ->groupBy('turbidity_level')
             ->orderBy('id', 'asc')
@@ -85,7 +86,7 @@ class AdminController extends Controller
     $chart3->dataset = (array_values($turbidityData));
 
     //for PH data
-    $phData = DB::table('ph_levels')
+    $phData = DB::table('sensor_data')
             ->select('ph_level')
             ->groupBy('ph_level')
             ->orderBy('id', 'asc')
@@ -109,9 +110,11 @@ class AdminController extends Controller
     $turbidity_avg = $turbidity_value->avg('turbidity_level');
 
     //for jumbo water chart
-    $water_value = Water::all();
-    $water_avg = $water_value->avg('water_level');
+    $collection = collect([1, 2, 3]);
 
+    // $collection = Collection::make([1, 2, 3]);
+    dd($collection);
+   
   	return view('admin.dashboard', compact('chart1','chart2','chart3','chart4','recentActivities','user'))
          ->with('turbidity_avg', $turbidity_avg)
          ->with('water_avg', $water_avg)
@@ -295,10 +298,10 @@ class AdminController extends Controller
   }
   public function employeeDelete($id) {
     $remark = 'has deleted an account in the system at';
-    $id = auth()->user()->id;
+    $user_id = auth()->user()->id;
 
     $records = Log::create([
-        'user_id' => $id,
+        'user_id' => $user_id,
         'remarks' => $remark,
         'created_at' => Carbon::now()
     ]);

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTemperaturesTable extends Migration
+class CreateSensorDataTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateTemperaturesTable extends Migration
      */
     public function up()
     {
-        Schema::create('temperatures', function (Blueprint $table) {
+        Schema::create('sensor_data', function (Blueprint $table) {
             $table->id();
+            $table->string('water_level');
+            $table->string('ph_level');
             $table->string('temperature_level');
+            $table->string('turbidity_level');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateTemperaturesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('temperatures');
+        Schema::dropIfExists('sensor_data');
     }
 }
