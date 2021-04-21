@@ -67,7 +67,7 @@ Dashboard
 	                <h6>Water Level</h6>
 	              </div>
 	              <div class="card-body">
-	                <h6>{{ $water_avg }}%</h6>
+	                <h6></h6>
 	              </div>
 	            </div>
 	          </div>
@@ -132,37 +132,46 @@ Dashboard
 		var chart = new Chart(ctx, {
 		type: 'line',
 		data: {
-		labels:  {!! json_encode($chart1->labels) !!} ,
+		labels:  {!! json_encode($paramlabels) !!} ,
 		datasets: [
 			{
 			label: 'Water Level',
 			backgroundColor: "rgba(71, 195, 99, 0.5)",
 			data:  {!! json_encode($chart1->dataset)!!} ,
 			borderColor: "#47c363",
-        	fill: false,
+        	fill: true,
 			},{
 			label: 'Temperature Level',
 			backgroundColor: "rgba(252, 84, 75, 0.5)",
 			data:  {!! json_encode($chart2->dataset)!!},
 			borderColor: "#fc544b",
-			fill: false,
+			fill: true,
 			},{
 			label: 'Turbidity Level',
 			backgroundColor: "rgba(205, 211, 216, 0.5)",
 			data:  {!! json_encode($chart3->dataset)!!},
 			borderColor: "#cdd3d8",
-        	fill: false,
+        	fill: true,
 			},{
 			label: 'PH Level',
 			backgroundColor: "rgba(103, 119, 239, 0.5)",
 			data:  {!! json_encode($chart4->dataset)!!} ,
 			borderColor: "#6777ef",
-			fill: false,
+			fill: true,
 			},
-
 		]
 		},
 		options: {
+			responsive: true,
+			plugins: {
+				legend: {
+					position: 'top',
+				},
+				title: {
+					display: true,
+					text: 'Chart.js Line Chart'
+				}
+		    },
 			scales: {
 				yAxes: [{
 					ticks: {

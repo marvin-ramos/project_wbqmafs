@@ -17,7 +17,7 @@ Water Parameters
 	            <div class="card-header">
 	              <h4>Water Level Parameters</h4>
 	            </div>
-	            <div class="card-body">
+	            <div class="card-body" id="chart">
 	              <canvas id="waterChart" class="rounded shadow" height="220"></canvas>
 	              <script src="{{ asset('vendor/chart.js/dist/Chart.min.js') }}"></script>
 	            </div>
@@ -81,18 +81,29 @@ Water Parameters
 	        </div>
 	    </div>
 	</div>
+</section>
+@endsection
 
+@section('scripts')
+	<!-- <script>
+		$(document).ready(function(){
+			setInterval(function(){
+				$("#waterChart").load("http://127.0.0.1:8000/admin/parameter/water");
+				refresh();
+			}, 10000);
+		});
+	</script> -->
 	<script>
 		var ctx = document.getElementById('waterChart').getContext('2d');
 		var chart = new Chart(ctx, {
 		type: 'line',
 		data: {
-		labels:  {!! json_encode($chart->labels) !!} ,
+		labels:  {!! json_encode($paramlabels) !!} ,
 		datasets: [
 			{
 			label: 'Water Level',
 			backgroundColor: "rgba(71, 195, 99, 0.5)",
-			data:  {!! json_encode($chart->dataset)!!} ,
+			data:  {!! json_encode($waterData) !!} ,
 			borderColor: "#47c363",
         	fill: true,
 			},
@@ -130,5 +141,4 @@ Water Parameters
 		}
 		});
 	</script>
-</section>
 @endsection

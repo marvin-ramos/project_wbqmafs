@@ -13,10 +13,7 @@ use App\Gender;
 use App\Status;
 use App\User;
 use App\Role;
-use App\Temperature;
-use App\Turbidity;
-use App\Water;
-use App\PhLevel;
+use App\Data;
 use App\Chart;
 use App\Ponds;
 
@@ -49,73 +46,68 @@ class AdminController extends Controller
                    ->orderBy('id', 'asc')
                    ->simplePaginate(4); 
 
-    //for water data here
-    $waterData = DB::table('sensor_data')
-            ->select('water_level')
-            ->groupBy('water_level')
+    $paramlabels = DB::table('data')
+            ->select('created_at')
             ->orderBy('id', 'asc')
-            ->pluck('water_level')
+            ->pluck('created_at')
+            ->all();
+
+    //for water data here
+    $waterData = DB::table('data')
+            ->select('waterlevel')
+            ->orderBy('id', 'asc')
+            ->pluck('waterlevel')
             ->all();
 
     $chart1 = new Chart;
-    $chart1->labels = (array_keys($waterData));
     $chart1->dataset = (array_values($waterData));
 
     //for temperature data
-    $temperatureData = DB::table('sensor_data')
-            ->select('temperature_level')
-            ->groupBy('temperature_level')
+    $temperatureData = DB::table('data')
+            ->select('templevel')
             ->orderBy('id', 'asc')
-            ->pluck('temperature_level')
+            ->pluck('templevel')
             ->all();
 
     $chart2 = new Chart;
-    $chart2->labels = (array_keys($temperatureData));
     $chart2->dataset = (array_values($temperatureData));
 
     //for turbidity data
-    $turbidityData = DB::table('sensor_data')
-            ->select('turbidity_level')
-            ->groupBy('turbidity_level')
+    $turbidityData = DB::table('data')
+            ->select('blevel')
             ->orderBy('id', 'asc')
-            ->pluck('turbidity_level')
+            ->pluck('blevel')
             ->all();
 
     $chart3 = new Chart;
-    $chart3->labels = (array_keys($turbidityData));
     $chart3->dataset = (array_values($turbidityData));
 
     //for PH data
-    $phData = DB::table('sensor_data')
-            ->select('ph_level')
-            ->groupBy('ph_level')
+    $phData = DB::table('data')
+            ->select('phlevel')
             ->orderBy('id', 'asc')
-            ->pluck('ph_level')
+            ->pluck('phlevel')
             ->all();
 
     $chart4 = new Chart;
-    $chart4->labels = (array_keys($phData));
     $chart4->dataset = (array_values($phData));
 
+    $water_value = Data::all();
+    $water_avg = $water_value->avg('waterlevel');
+
     //for jumbo water chart
-    $ph_value = PhLevel::all();
-    $ph_avg = $ph_value->avg('ph_level');
+    $ph_value = Data::all();
+    $ph_avg = $ph_value->avg('phlevel');
 
     //for jumbo temperature chart
-    $temp_value = Temperature::all();
-    $temp_avg = $temp_value->avg('temperature_level');
+    $temp_value = Data::all();
+    $temp_avg = $temp_value->avg('templevel');
 
     //for jumbo turbidity chart
-    $turbidity_value = Turbidity::all();
-    $turbidity_avg = $turbidity_value->avg('turbidity_level');
-
-    //for jumbo water chart
-    $collection = collect([1, 2, 3]);
-
-    // $collection = Collection::make([1, 2, 3]);
-    dd($collection);
+    $turbidity_value = Data::all();
+    $turbidity_avg = $turbidity_value->avg('blevel');
    
-  	return view('admin.dashboard', compact('chart1','chart2','chart3','chart4','recentActivities','user'))
+  	return view('admin.dashboard', compact('chart1','chart2','chart3','chart4','recentActivities','user','paramlabels'))
          ->with('turbidity_avg', $turbidity_avg)
          ->with('water_avg', $water_avg)
          ->with('temp_avg', $temp_avg)
@@ -515,22 +507,19 @@ class AdminController extends Controller
     $user = auth()->user();
     $user->employee;
 
-    $waterData = DB::table('waters')
-            ->select('water_level')
-            ->groupBy('water_level')
-            ->pluck('water_level')
+    $paramlabels = DB::table('data')
+            ->select('created_at')
+            ->orderBy('id', 'desc')
+            ->pluck('created_at')
             ->all();
 
-    for ($i=0; $i<=count($waterData); $i++) {
-      $colours[] = '#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6);
-    }
+    $waterData = DB::table('data')
+            ->select('waterlevel')
+            ->orderBy('id', 'desc')
+            ->pluck('waterlevel')
+            ->all();
 
-    $chart = new Chart;
-    $chart->labels = (array_keys($waterData));
-    $chart->dataset = (array_values($waterData));
-    $chart->colours = $colours;
-
-    return view('parameters.water', compact('chart','user'))
+    return view('parameters.water', compact('user', 'paramlabels','waterData'))
          ->with('history', $count);
   }
   public function parameterTemperature() {
@@ -538,22 +527,19 @@ class AdminController extends Controller
     $user = auth()->user();
     $user->employee;
 
-    $temperatureData = DB::table('temperatures')
-            ->select('temperature_level')
-            ->groupBy('temperature_level')
-            ->pluck('temperature_level')
+    $paramlabels = DB::table('data')
+            ->select('created_at')
+            ->orderBy('id', 'desc')
+            ->pluck('created_at')
             ->all();
 
-    for ($i=0; $i<=count($temperatureData); $i++) {
-      $colours[] = '#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6);
-    }
+    $temperatureData = DB::table('data')
+            ->select('templevel')
+            ->orderBy('id', 'desc')
+            ->pluck('templevel')
+            ->all();
 
-    $chart = new Chart;
-    $chart->labels = (array_keys($temperatureData));
-    $chart->dataset = (array_values($temperatureData));
-    $chart->colours = $colours;
-
-    return view('parameters.temperature', compact('chart','user'))
+    return view('parameters.temperature', compact('user', 'paramlabels', 'temperatureData'))
          ->with('history', $count);
   }
   public function parameterPh() {
@@ -561,22 +547,19 @@ class AdminController extends Controller
     $user = auth()->user();
     $user->employee;
 
-    $phData = DB::table('ph_levels')
-            ->select('ph_level')
-            ->groupBy('ph_level')
-            ->pluck('ph_level')
+    $paramlabels = DB::table('data')
+            ->select('created_at')
+            ->orderBy('id', 'desc')
+            ->pluck('created_at')
             ->all();
 
-    for ($i=0; $i<=count($phData); $i++) {
-      $colours[] = '#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6);
-    }
+    $phData = DB::table('data')
+            ->select('phlevel')
+            ->orderBy('id', 'desc')
+            ->pluck('phlevel')
+            ->all();
 
-    $chart = new Chart;
-    $chart->labels = (array_keys($phData));
-    $chart->dataset = (array_values($phData));
-    $chart->colours = $colours;
-
-    return view('parameters.ph', compact('chart','user'))
+    return view('parameters.ph', compact('paramlabels','user','phData'))
          ->with('history', $count);
   }
   public function parameterTurbidity() {
@@ -584,22 +567,19 @@ class AdminController extends Controller
     $user = auth()->user();
     $user->employee;
 
-    $turbidityData = DB::table('turbidities')
-            ->select('turbidity_level')
-            ->groupBy('turbidity_level')
-            ->pluck('turbidity_level')
+    $paramlabels = DB::table('data')
+            ->select('created_at')
+            ->orderBy('id', 'desc')
+            ->pluck('created_at')
             ->all();
 
-    for ($i=0; $i<=count($turbidityData); $i++) {
-      $colours[] = '#' . substr(str_shuffle('ABCDEF0123456789'), 0, 6);
-    }
+    $turbidityData = DB::table('data')
+            ->select('blevel')
+            ->orderBy('id', 'desc')
+            ->pluck('blevel')
+            ->all();
 
-    $chart = new Chart;
-    $chart->labels = (array_keys($turbidityData));
-    $chart->dataset = (array_values($turbidityData));
-    $chart->colours = $colours;
-
-    return view('parameters.turbidity', compact('chart','user'))
+    return view('parameters.turbidity', compact('paramlabels','user', 'turbidityData'))
          ->with('history', $count);
   }
 

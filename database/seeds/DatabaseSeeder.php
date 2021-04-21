@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
             GendersTableSeeder::class,
             StatusesTableSeeder::class,
             LogsTableSeeder::class,
-            Sensor_DataTableSeeder::class
+            Sensor_DataTableSeeder::class,
+            DataTableSeeder::class
         ]);
     }
 }

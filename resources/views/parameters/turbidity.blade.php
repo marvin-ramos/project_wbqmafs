@@ -87,12 +87,12 @@ Water Parameters
 		var chart = new Chart(ctx, {
 		type: 'line',
 		data: {
-		labels:  {!! json_encode($chart->labels) !!} ,
+		labels:  {!! json_encode($paramlabels) !!} ,
 		datasets: [
 			{
 			label: 'Turbidity Level',
 			backgroundColor: "rgba(205, 211, 216, 0.5)",
-			data:  {!! json_encode($chart->dataset)!!},
+			data:  {!! json_encode($turbidityData)!!},
 			borderColor: "#cdd3d8",
         	fill: true,
 			},

@@ -87,12 +87,12 @@ Temperature Parameters
 		var chart = new Chart(ctx, {
 		type: 'line',
 		data: {
-		labels:  {!! json_encode($chart->labels) !!} ,
+		labels:  {!! json_encode($paramlabels) !!} ,
 		datasets: [
 			{
 			label: 'PH Level',
 			backgroundColor: "rgba(103, 119, 239, 0.5)",
-			data:  {!! json_encode($chart->dataset)!!} ,
+			data:  {!! json_encode($phData)!!} ,
 			borderColor: "#6777ef",
 			fill: true,
 			},
