@@ -19,7 +19,7 @@ Route::post('/login', 'WbqmafsController@customlogin')->name('custom.login');
 Route::group(['middleware' => 'authentic'], function(){
 	
 	Route::get('home', 'AdminController@dashboard')
-	     ->name('admin.dashboard');
+	     ->name('main.dashboard');
 });
 
 Route::group(['middleware' => 'authentic'], function(){

@@ -49,7 +49,7 @@ class HomeController extends Controller
                    ->simplePaginate(4); 
 
     //for water data here
-    $waterData = DB::table('waters')
+    $waterData = DB::table('sensor_data')
             ->select('water_level')
             ->groupBy('water_level')
             ->orderBy('id', 'asc')
@@ -61,7 +61,7 @@ class HomeController extends Controller
     $chart1->dataset = (array_values($waterData));
 
     //for temperature data
-    $temperatureData = DB::table('temperatures')
+    $temperatureData = DB::table('sensor_data')
             ->select('temperature_level')
             ->groupBy('temperature_level')
             ->orderBy('id', 'asc')
@@ -73,7 +73,7 @@ class HomeController extends Controller
     $chart2->dataset = (array_values($temperatureData));
 
     //for turbidity data
-    $turbidityData = DB::table('turbidities')
+    $turbidityData = DB::table('sensor_data')
             ->select('turbidity_level')
             ->groupBy('turbidity_level')
             ->orderBy('id', 'asc')
@@ -85,7 +85,7 @@ class HomeController extends Controller
     $chart3->dataset = (array_values($turbidityData));
 
     //for PH data
-    $phData = DB::table('ph_levels')
+    $phData = DB::table('sensor_data')
             ->select('ph_level')
             ->groupBy('ph_level')
             ->orderBy('id', 'asc')

@@ -8,15 +8,15 @@
         Welcome, {{ optional($user->employee)->firstname }} {{ optional($user->employee)->middlename }} {{ optional($user->employee)->lastname }}<br>
         You Logged as: {{ optional($user->role)->role_name }}
       </div>
-      <a href="{{ route('user.profile') }}" class="dropdown-item has-icon">
-        <i class="far fa-user"></i> Profile
+      <a href="{{ route('admin.profile') }}" class="dropdown-item has-icon">
+        <i class="far fa-user-circle"></i> Profile
       </a>
       <div class="dropdown-divider"></div>
-      <a href="{{ route('user.activities') }}" class="dropdown-item has-icon">
-        <i class="fas fa-sign-out-alt"></i> Activities
+      <a href="{{ route('admin.activities') }}" class="dropdown-item has-icon">
+        <i class="fas fa-users-cog"></i> Activities
       </a>
       <div class="dropdown-divider"></div>
-      <a href="{{ route('user.change.password') }}" class="dropdown-item has-icon">
+      <a href="{{ route('admin.change.password') }}" class="dropdown-item has-icon">
         <i class="fas fa-tools"></i> Change Password
       </a>
       <div class="dropdown-divider"></div>

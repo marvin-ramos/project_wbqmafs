@@ -28,7 +28,6 @@
       <div class="main-sidebar">
         @include('styles.partials.user.user-sidebar')
       </div>
-
       <!-- Main Content -->
       <div class="main-content">
         @yield('content')
@@ -43,7 +42,6 @@
   <script src="{{ asset('vendor/popper.js/dist/umd/popper.min.js') }}"></script>
   <script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
   <script src="{{ asset('vendor/chart.js/dist/Chart.min.js') }}"></script>
-  <script src="{{ asset('js/app.js') }}?{{ uniqid() }}"></script>
   <script src="{{ asset('vendor/pikadays/pikaday.js') }}"></script>
   <script src="{{ asset('vendor/nicescroll/dist/jquery.nicescroll.min.js') }}"></script>
   <script src="{{ asset('vendor/moment/min/moment.min.js') }}"></script>

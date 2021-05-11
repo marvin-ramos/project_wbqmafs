@@ -349,7 +349,7 @@ class AdminController extends Controller
     ]);
 
     $employee_account = User::where([
-            ['employee_id', '=', $request->get('employee_id')],
+            ['employee_id', '=', $request->get('employee_id')], 
             ])->first();
 
     if ($employee_account == null ) 
@@ -677,6 +677,7 @@ class AdminController extends Controller
            ->route('admin.change.password')
            ->with('success', 'Current Password Does not Matched');
     }
+    
     // dd($current_user);
   }
 }
